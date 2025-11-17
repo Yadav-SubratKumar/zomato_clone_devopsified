@@ -60,7 +60,29 @@ pipeline {
                     }
                 }
             }
-        }  
+        }
+
+        stage('Update K8s Deployment Image') {
+            steps {
+                script {
+
+                    def newTag = "subratdevops/zomato:${BUILD_NUMBER}"
+
+                    sh """
+                        sed -i 's|subratdevops/zomato:.*|${newTag}|g' k8s-prod/deployment.yaml
+                    """
+
+                    sh """
+                        git config user.email "jenkins@ci.com"
+                        git config user.name "Jenkins CI"
+                        git add k8s-prod/deployment.yaml
+                        git commit -m "Update image tag to ${newTag} [Jenkins Build ${BUILD_NUMBER}]"
+                        git push origin main
+                    """
+                }
+            }
+        }
+
           
     }
 }
