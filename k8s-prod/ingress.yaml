@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: user-management-ingress
-  namespace: jenkins
+  namespace: local-dev
 spec:
   ingressClassName: nginx
   rules:
